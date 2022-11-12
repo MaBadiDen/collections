@@ -9,6 +9,7 @@ import pro.sky.collections.Exception.EmployeeAlreadyAddedException;
 import pro.sky.collections.Exception.EmployeeNotFoundException;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/employee")
@@ -27,7 +28,7 @@ public class EmployeeController {
     @GetMapping("/add")
     public String addEmployee(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
         try {
-            employeeService.addEmployee(firstName, lastName);
+            employeeService.addEmployee(new Employee(firstName, lastName));
         } catch (EmployeeAlreadyAddedException e) {
             return "Такой сотрудник уже есть";
         }
@@ -35,14 +36,13 @@ public class EmployeeController {
     }
 
     @GetMapping("/return")
-    public List<Employee> retirn() {
+    public Map<String, Employee> retirn() {
         return employeeService.writeEmployee();
     }
     @GetMapping("/find")
     public String findEmployee(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-        Integer employee = employeeService.checkExistenceEmployee(firstName, lastName);
-        if(employee != null) {
-            return "Такой сотрудник уже есть под номером " + (employee+1);
+        if(employeeService.checkExistenceEmployee(new Employee(firstName, lastName))) {
+            return "Такой сотрудник уже есть";
         }
         return "Сотрудник не обнаружен";
     }
@@ -50,7 +50,7 @@ public class EmployeeController {
     @GetMapping("/delete")
     public String deleteEmployee(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
         try {
-            employeeService.deleteEmployee(firstName, lastName);
+            employeeService.deleteEmployee(new Employee(firstName, lastName));
         } catch (EmployeeNotFoundException e) {
             return "Такой сотрудник не обнаружен";
         }

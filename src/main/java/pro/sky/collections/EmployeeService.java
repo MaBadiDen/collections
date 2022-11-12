@@ -1,14 +1,16 @@
 package pro.sky.collections;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface EmployeeService {
 
-    void addEmployee(String firstName, String secondName);
+    void addEmployee(Employee employee);
 
-    void deleteEmployee(String firstName, String lastName);
+    void deleteEmployee(Employee employee);
 
-    List<Employee> writeEmployee();
+    Map<String, Employee> writeEmployee();
 
-    Integer checkExistenceEmployee(String firstName, String lastName);
+    boolean checkExistenceEmployee(Employee employee);
 }
