@@ -56,4 +56,9 @@ public class EmployeeController {
         }
         return (new Employee(firstName, lastName)) + " удален";
     }
+    @GetMapping("/huy")
+    public String mamama() {
+        Employee employee = new Employee("Max", "Pork");
+        return employee.takeFirstLastName();
+    }
 }

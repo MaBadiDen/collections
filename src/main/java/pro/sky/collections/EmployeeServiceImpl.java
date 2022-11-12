@@ -23,7 +23,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         {
             throw new EmployeeAlreadyAddedException();
         }
-        employees.put(employee.toString(), employee);
+        employees.put(employee.takeFirstLastName(), employee);
 
     }
     @Override
@@ -31,7 +31,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if(!checkExistenceEmployee(employee)) {
             throw new EmployeeNotFoundException();
         } else {
-            employees.remove(employee.toString());
+            employees.remove(employee.takeFirstLastName());
         }
     }
 
@@ -41,7 +41,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
     @Override
     public boolean checkExistenceEmployee(Employee employee) {
-        return employees.containsKey(employee.toString());
+        return employees.containsKey(employee.takeFirstLastName());
     }
+
 
 }

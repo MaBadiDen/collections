@@ -27,6 +27,10 @@ public class Employee {
         this.lastName = lastName;
     }
 
+    public String takeFirstLastName () {
+        return firstName + " " + lastName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -41,7 +45,7 @@ public class Employee {
 
     @Override
     public String toString() {
-        return firstName + " " + lastName;
+        return "Сотрудник: " + firstName + " " + lastName;
     }
 
 }
