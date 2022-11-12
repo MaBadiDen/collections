@@ -5,10 +5,30 @@ import java.util.Objects;
 public class Employee {
     private String firstName;
     private String lastName;
+    private int departament;
+    private int salary;
 
-    public Employee(String firstName, String lastName) {
+    public int getDepartament() {
+        return departament;
+    }
+
+    public void setDepartament(int departament) {
+        this.departament = departament;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
+
+    public Employee(String firstName, String lastName, int salary, int departament) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.salary = salary;
+        this.departament = departament;
     }
 
     public String getFirstName() {
@@ -31,16 +51,17 @@ public class Employee {
         return firstName + " " + lastName;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Employee employee)) return false;
-        return Objects.equals(getFirstName(), employee.getFirstName()) && Objects.equals(getLastName(), employee.getLastName());
+        return getDepartament() == employee.getDepartament() && getSalary() == employee.getSalary() && Objects.equals(getFirstName(), employee.getFirstName()) && Objects.equals(getLastName(), employee.getLastName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getFirstName(), getLastName());
+        return Objects.hash(getFirstName(), getLastName(), getDepartament(), getSalary());
     }
 
     @Override

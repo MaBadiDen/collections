@@ -8,9 +8,9 @@ public interface EmployeeService {
 
     void addEmployee(Employee employee);
 
-    void deleteEmployee(Employee employee);
+    void deleteEmployee(String firstName, String lastName);
 
-    Map<String, Employee> writeEmployee();
+    String writeEmployees();
 
-    boolean checkExistenceEmployee(Employee employee);
+    boolean checkExistenceEmployee(String firstName, String lastName);
 }

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import pro.sky.collections.Exception.EmployeeAlreadyAddedException;
 import pro.sky.collections.Exception.EmployeeNotFoundException;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,23 +25,26 @@ public class EmployeeController {
         return "Добро пожаловать в БухУчетСотрудников!";
     }
     @GetMapping("/add")
-    public String addEmployee(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
+    public String addEmployee(@RequestParam("firstName") String firstName,
+                              @RequestParam("lastName") String lastName,
+                              @RequestParam("salary") int salary,
+                              @RequestParam("departament") int departament) {
         try {
-            employeeService.addEmployee(new Employee(firstName, lastName));
+            employeeService.addEmployee(new Employee(firstName, lastName, salary, departament));
         } catch (EmployeeAlreadyAddedException e) {
             return "Такой сотрудник уже есть";
         }
-            return (new Employee(firstName, lastName)) + " добавлен";
+            return (new Employee(firstName, lastName, salary, departament)) + " добавлен";
     }
 
     @GetMapping("/return")
-    public Map<String, Employee> retirn() {
-        return employeeService.writeEmployee();
+    public String retirn() {
+        return employeeService.writeEmployees();
     }
     @GetMapping("/find")
     public String findEmployee(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-        if(employeeService.checkExistenceEmployee(new Employee(firstName, lastName))) {
-            return "Такой сотрудник уже есть";
+        if(employeeService.checkExistenceEmployee(firstName, lastName)) {
+            return "Такой сотрудник есть";
         }
         return "Сотрудник не обнаружен";
     }
@@ -50,11 +52,11 @@ public class EmployeeController {
     @GetMapping("/delete")
     public String deleteEmployee(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
         try {
-            employeeService.deleteEmployee(new Employee(firstName, lastName));
+            employeeService.deleteEmployee(firstName, lastName);
         } catch (EmployeeNotFoundException e) {
             return "Такой сотрудник не обнаружен";
         }
-        return (new Employee(firstName, lastName)) + " удален";
+        return firstName + " " + lastName + " удален";
     }
 
 }
