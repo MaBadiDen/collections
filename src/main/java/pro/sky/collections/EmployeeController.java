@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pro.sky.collections.Exception.EmployeeAlreadyAddedException;
 import pro.sky.collections.Exception.EmployeeNotFoundException;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -37,8 +38,11 @@ public class EmployeeController {
             return (new Employee(firstName, lastName, salary, departament)) + " добавлен";
     }
 
-    @GetMapping("/return")
-    public String retirn() {
+    @GetMapping("/departament/all")
+    public StringBuilder retirn(@RequestParam(value = "departamentId", required = false) Integer departamentId) {
+        if(departamentId != null) {
+            return employeeService.writeEmployeesByDep(departamentId);
+        }
         return employeeService.writeEmployees();
     }
     @GetMapping("/find")
@@ -57,6 +61,25 @@ public class EmployeeController {
             return "Такой сотрудник не обнаружен";
         }
         return firstName + " " + lastName + " удален";
+    }
+
+
+    @GetMapping("/departament/max")
+    public String getMax(@RequestParam("departamentId") int departamentId) {
+        try {
+            return employeeService.getMaxSalary(departamentId).toString();
+        } catch (RuntimeException e) {
+            return "Такого депортамента не существует";
+        }
+    }
+
+    @GetMapping("/departament/min")
+    public String getMix(@RequestParam("departamentId") int departamentId) {
+        try {
+            return employeeService.getMinSalary(departamentId).toString();
+        } catch (RuntimeException e) {
+            return "Такого депортамента не существует";
+        }
     }
 
 }
