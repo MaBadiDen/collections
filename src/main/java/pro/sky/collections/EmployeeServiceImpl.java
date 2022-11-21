@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pro.sky.collections.Exception.EmployeeAlreadyAddedException;
 import pro.sky.collections.Exception.EmployeeNotFoundException;
+import pro.sky.collections.Exception.InvalidInputException;
 
 import java.util.*;
 
@@ -36,6 +37,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void addEmployee(Employee employee) {
+
+        if(!validateEmployee(employee.getFirstName(), employee.getLastName())) {
+            throw new InvalidInputException();
+        }
         if(checkExistenceEmployee(employee.getFirstName(), employee.getLastName()))
         {
             throw new EmployeeAlreadyAddedException();
@@ -45,6 +50,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
     @Override
     public void deleteEmployee(String firstName, String lastName) {
+
+        if(!validateEmployee(firstName, lastName)) {
+            throw new InvalidInputException();
+        }
         if(!checkExistenceEmployee(firstName, lastName)) {
             throw new EmployeeNotFoundException();
         } else {
@@ -60,6 +69,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public boolean checkExistenceEmployee(String firstName, String lastName) {
+        if(!validateEmployee(firstName, lastName)) {
+            throw new InvalidInputException();
+        }
         return employees.containsKey(firstName + " " + lastName);
     }
 
