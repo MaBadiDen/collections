@@ -39,9 +39,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/departament/all")
-    public StringBuilder retirn(@RequestParam(value = "departamentId", required = false) Integer departamentId) {
+    public List<Employee> retirn(@RequestParam(value = "departamentId", required = false) Integer departamentId) {
         if(departamentId != null) {
-            return employeeService.writeEmployeesByDep(departamentId);
+            return employeeService.getPersonsByDepartament(departamentId);
         }
         return employeeService.writeEmployees();
     }

@@ -52,49 +52,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
     @Override
-    public StringBuilder writeEmployees() {
-        StringBuilder output = new StringBuilder("Список сотрудников: <br>");
+    public List<Employee> writeEmployees() {
         int depId = 1;
         while (getPersonsByDepartament(depId).size() == 0) {
             depId++;
         }
-        List<Integer> points = new ArrayList<>();
-        points.add(0);
-        int point = 0;
-        List<Integer> pointsNumbers = new ArrayList<>();
-        pointsNumbers.add(depId);
-
-
-
         List<Employee> employeesList = getPersonsByDepartament(depId);
         while (employeesList.size() != employees.size()) {
-
-
             final int finalDepId = depId++;
-
             List <Employee> newNewEmployees = getPersonsByDepartament(depId).stream()
                     .filter(e -> (e.getDepartament() != finalDepId))
-                    .collect(Collectors.toList());
-
-            point = point + getPersonsByDepartament(finalDepId).size();
-            points.add(point);
-            if(newNewEmployees.size() != 0) {
-                pointsNumbers.add(newNewEmployees.get(0).getDepartament());
-            }
+                    .toList();
             employeesList.addAll(newNewEmployees);
         }
-        Integer i = 0;
-        int j = 0;
-        for (Employee employee : employeesList) {
-
-            if(points.contains(i)) {
-                output.append("----------------------------------------------------------<br>").append("<br>" + pointsNumbers.get(j++) + " департамент: ");
-            }
-            i++;
-            output.append("<br>").append(employee.getFirstName()).append(" ").append(employee.getLastName()).append(" имеет зарплату: ").append(employee.getSalary()).append("<br>");
-        }
-        output.append("----------------------------------------------------------");
-        return output;
+        return employeesList;
     }
     @Override
     public boolean checkExistenceEmployee(String firstName, String lastName) {
@@ -113,49 +84,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee getMaxSalary(int departamentId) {
         final List<Employee> employeesInDep = getPersonsByDepartament(departamentId);
-        int max = 0;
-        int maxId = -1;
-        int i = 0;
-        for(Employee employee : employeesInDep) {
-            if(employee.getSalary() > max) {
-                max = employee.getSalary();
-                maxId = i;
-            }
-            i++;
-        }
-        if (maxId == -1) {
-            throw new RuntimeException();
-        }
-        return employeesInDep.get(maxId);
-    }
-    @Override
-    public StringBuilder writeEmployeesByDep(int depId) {
-        StringBuilder output = new StringBuilder("Список сотрудников " + depId + " департамента<br>");
-        final List<Employee> employeesList = getPersonsByDepartament(depId);
-        for (Employee employee : employeesList) {
-            output.append("<br>").append(employee.getFirstName()).append(" ").append(employee.getLastName()).append(" имеет зарплату: ").append(employee.getSalary()).append("<br>");
-        }
 
-
-        return output;
+        Optional<Employee> employee = Optional.of(employeesInDep.stream()
+                .max(Comparator.comparingInt(Employee::getSalary))
+                .get());
+        return employee.orElseThrow();
     }
+
     @Override
     public Employee getMinSalary(int departamentId) {
         final List<Employee> employeesInDep = getPersonsByDepartament(departamentId);
-        int min = employeesInDep.get(0).getSalary();
-        int minId = -1;
-        int i = 0;
-        for(Employee employee : employeesInDep) {
-            if(employee.getSalary() < min) {
-                min = employee.getSalary();
-                minId = i;
-            }
-            i++;
-        }
-        if(minId == -1) {
-            throw new RuntimeException();
-        }
-        return employeesInDep.get(minId);
+
+        Optional<Employee> employee = Optional.of(employeesInDep.stream()
+                .min(Comparator.comparingInt(Employee::getSalary))
+                .get());
+        return employee.orElseThrow();
+
     }
 
 
