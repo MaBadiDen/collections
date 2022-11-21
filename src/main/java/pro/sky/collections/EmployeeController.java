@@ -9,7 +9,6 @@ import pro.sky.collections.Exception.EmployeeAlreadyAddedException;
 import pro.sky.collections.Exception.EmployeeNotFoundException;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/employee")
@@ -38,13 +37,6 @@ public class EmployeeController {
             return (new Employee(firstName, lastName, salary, departament)) + " добавлен";
     }
 
-    @GetMapping("/departament/all")
-    public List<Employee> retirn(@RequestParam(value = "departamentId", required = false) Integer departamentId) {
-        if(departamentId != null) {
-            return employeeService.getPersonsByDepartament(departamentId);
-        }
-        return employeeService.writeEmployees();
-    }
     @GetMapping("/find")
     public String findEmployee(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
         if(employeeService.checkExistenceEmployee(firstName, lastName)) {
@@ -64,22 +56,8 @@ public class EmployeeController {
     }
 
 
-    @GetMapping("/departament/max")
-    public String getMax(@RequestParam("departamentId") int departamentId) {
-        try {
-            return employeeService.getMaxSalary(departamentId).toString();
-        } catch (RuntimeException e) {
-            return "Такого депортамента не существует";
-        }
-    }
 
-    @GetMapping("/departament/min")
-    public String getMix(@RequestParam("departamentId") int departamentId) {
-        try {
-            return employeeService.getMinSalary(departamentId).toString();
-        } catch (RuntimeException e) {
-            return "Такого депортамента не существует";
-        }
-    }
+
+
 
 }

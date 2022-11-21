@@ -1,17 +1,19 @@
 package pro.sky.collections;
 
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pro.sky.collections.Exception.EmployeeAlreadyAddedException;
 import pro.sky.collections.Exception.EmployeeNotFoundException;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
+import static org.apache.commons.lang3.StringUtils.*;
 
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    Map<String, Employee> employees =  new HashMap<>(Map.of(
+    public Map<String, Employee> employees =  new HashMap<>(Map.of(
             "Mark Potato",
             new Employee("Mark", "Potato", 10000, 1),
             "Oleg Melon",
@@ -50,56 +52,20 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-
     @Override
-    public List<Employee> writeEmployees() {
-        int depId = 1;
-        while (getPersonsByDepartament(depId).size() == 0) {
-            depId++;
-        }
-        List<Employee> employeesList = getPersonsByDepartament(depId);
-        while (employeesList.size() != employees.size()) {
-            final int finalDepId = depId++;
-            List <Employee> newNewEmployees = getPersonsByDepartament(depId).stream()
-                    .filter(e -> (e.getDepartament() != finalDepId))
-                    .toList();
-            employeesList.addAll(newNewEmployees);
-        }
-        return employeesList;
+    public Map<String, Employee> getEmployees() {
+        return employees;
     }
+
+
     @Override
     public boolean checkExistenceEmployee(String firstName, String lastName) {
         return employees.containsKey(firstName + " " + lastName);
     }
-    @Override
-    public List<Employee> getPersonsByDepartament(int departamentId) {
-        List<Employee> employees1 = new ArrayList<>();
-        for(Employee employee : employees.values()) {
-            if (employee.getDepartament() == departamentId) {
-                employees1.add(employee);
-            }
-        }
-        return employees1;
-    }
-    @Override
-    public Employee getMaxSalary(int departamentId) {
-        final List<Employee> employeesInDep = getPersonsByDepartament(departamentId);
 
-        Optional<Employee> employee = Optional.of(employeesInDep.stream()
-                .max(Comparator.comparingInt(Employee::getSalary))
-                .get());
-        return employee.orElseThrow();
-    }
 
-    @Override
-    public Employee getMinSalary(int departamentId) {
-        final List<Employee> employeesInDep = getPersonsByDepartament(departamentId);
-
-        Optional<Employee> employee = Optional.of(employeesInDep.stream()
-                .min(Comparator.comparingInt(Employee::getSalary))
-                .get());
-        return employee.orElseThrow();
-
+    private boolean validateEmployee(String firstName, String lastName) {
+        return isAlpha(firstName) && isAlpha(lastName);
     }
 
 

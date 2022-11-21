@@ -1,6 +1,7 @@
 package pro.sky.collections;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EmployeeService {
 
@@ -8,13 +9,9 @@ public interface EmployeeService {
 
     void deleteEmployee(String firstName, String lastName);
 
-    List<Employee> writeEmployees();
+    Map<String, Employee> getEmployees();
 
     boolean checkExistenceEmployee(String firstName, String lastName);
 
-    List<Employee> getPersonsByDepartament(int departamentId);
 
-    Employee getMaxSalary(int departamentId);
-
-    Employee getMinSalary(int departamentId);
 }
