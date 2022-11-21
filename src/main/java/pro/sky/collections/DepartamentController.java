@@ -37,7 +37,7 @@ public class DepartamentController {
     public List<Employee> writeAllEmployees() {
         return departamentService.writeEmployees();
     }
-    @GetMapping("/alll")
+    @GetMapping(path = "/all", params = {"departamentId"})
     public List<Employee> writeDepEmployees(@RequestParam(value = "departamentId") Integer departamentId) {
         return departamentService.getPersonsByDepartament(departamentId);
     }
