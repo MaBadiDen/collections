@@ -4,6 +4,7 @@ import jdk.internal.icu.text.UnicodeSet;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class DepartamentServiceImpl implements DepartamentService {
@@ -34,31 +35,15 @@ public class DepartamentServiceImpl implements DepartamentService {
     }
 
     @Override
-    public List<Employee> writeEmployees() {
-        int depId = 1;
-        Map<String, Employee> employees = employeeService.getEmployees();
-        while (getPersonsByDepartament(depId).size() == 0) {
-            depId++;
-        }
-        List<Employee> employeesList = getPersonsByDepartament(depId);
-        while (employeesList.size() != employees.size()) {
-            final int finalDepId = depId++;
-            List <Employee> newNewEmployees = getPersonsByDepartament(depId).stream()
-                    .filter(e -> (e.getDepartament() != finalDepId))
-                    .toList();
-            employeesList.addAll(newNewEmployees);
-        }
-        return employeesList;
+    public Map<Integer, List<Employee>> writeEmployees() {
+        return employeeService.getEmployees().stream()
+                .collect(Collectors.groupingBy(Employee::getDepartament));
     }
 
     @Override
     public List<Employee> getPersonsByDepartament(int departamentId) {
-        List<Employee> employees1 = new ArrayList<>();
-        for(Employee employee : employeeService.getEmployees().values()) {
-            if (employee.getDepartament() == departamentId) {
-                employees1.add(employee);
-            }
-        }
-        return employees1;
+        return employeeService.getEmployees().stream()
+                .filter(e -> (e.getDepartament() == departamentId))
+                .toList();
     }
 }

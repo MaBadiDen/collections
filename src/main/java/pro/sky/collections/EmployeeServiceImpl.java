@@ -62,8 +62,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Map<String, Employee> getEmployees() {
-        return employees;
+    public Collection<Employee> getEmployees() {
+        return employees.values();
     }
 
 
