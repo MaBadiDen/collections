@@ -14,7 +14,8 @@ import static org.apache.commons.lang3.StringUtils.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    public Map<String, Employee> employees =  new HashMap<>(Map.of(
+    public Map<String, Employee> employees =  new HashMap<>();
+           /* (Map.of(
             "Mark Potato",
             new Employee("Mark", "Potato", 10000, 1),
             "Oleg Melon",
@@ -33,11 +34,12 @@ public class EmployeeServiceImpl implements EmployeeService {
             new Employee("Mark", "Twen", 36543, 7),
             "Lask Kirov",
             new Employee("Lask", "Kirov", 36543, 5)
-    ));
+    ));*/
 
     @Override
-    public void addEmployee(Employee employee) {
+    public Employee addEmployee(String firstName, String lastName, int salary, int departament) {
 
+        Employee employee = new Employee(firstName, lastName, salary, departament);
         if(!validateEmployee(employee.getFirstName(), employee.getLastName())) {
             throw new InvalidInputException();
         }
@@ -46,10 +48,11 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new EmployeeAlreadyAddedException();
         }
         employees.put(employee.takeFirstLastName(), employee);
+        return employee;
 
     }
     @Override
-    public void deleteEmployee(String firstName, String lastName) {
+    public Employee deleteEmployee(String firstName, String lastName) {
 
         if(!validateEmployee(firstName, lastName)) {
             throw new InvalidInputException();
@@ -57,7 +60,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         if(!checkExistenceEmployee(firstName, lastName)) {
             throw new EmployeeNotFoundException();
         } else {
+            Employee employee = employees.get(firstName + " " + lastName);
             employees.remove(firstName + " " + lastName);
+            return employee;
         }
     }
 

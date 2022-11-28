@@ -6,9 +6,9 @@ import java.util.Map;
 
 public interface EmployeeService {
 
-    void addEmployee(Employee employee);
+    Employee addEmployee(String firstName, String lastName, int salary, int departament);
 
-    void deleteEmployee(String firstName, String lastName);
+    Employee deleteEmployee(String firstName, String lastName);
 
     Collection<Employee> getEmployees();
 

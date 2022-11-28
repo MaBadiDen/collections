@@ -30,11 +30,11 @@ public class EmployeeController {
                               @RequestParam("salary") int salary,
                               @RequestParam("departament") int departament) {
         try {
-            employeeService.addEmployee(new Employee(firstName, lastName, salary, departament));
+            employeeService.addEmployee(firstName, lastName, salary, departament);
         } catch (EmployeeAlreadyAddedException e) {
             return "Такой сотрудник уже есть";
         }
-            return (new Employee(firstName, lastName, salary, departament)) + " добавлен";
+        return (new Employee(firstName, lastName, salary, departament)) + " добавлен";
     }
 
     @GetMapping("/find")
